@@ -1,0 +1,15 @@
+{
+  "@context": [
+    "https://www.w3.org/ns/did/v1",
+    "https://w3id.org/blockchain/v1"
+  ],
+  "id": "did:example:123",
+  "assertionMethod": [
+    {
+      "id": "did:example:123#test-id",
+      "type": "BlockchainVerificationMethod2021",
+      "controller": "did:example:123",
+      "blockchainAccountId": "0xF20cC6c5B9fef13Cb75300BbD059C176D18d3d01@eip155:1"
+    }
+  ]
+}

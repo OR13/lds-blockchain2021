@@ -1,0 +1,14 @@
+{
+  "id": "did:example:123#test-id",
+  "type": "BlockchainVerificationMethod2021",
+  "controller": "did:example:123",
+  "blockchainAccountId": "0xF20cC6c5B9fef13Cb75300BbD059C176D18d3d01@eip155:1",
+  "privateKeyJwk": {
+    "kty": "EC",
+    "crv": "secp256k1",
+    "d": "_8MVufNp9Mx8fsaK8BeBnGu5NA2mQUdVnV09GS-c3HQ",
+    "x": "VO7HBipA3jqk0TTIn26yDKQ38THzsS1YL0SH7A4fa4E",
+    "y": "l-wYxJPPZvT0ndc5CeuL4PpTK_OOeRqqh0ULVozAQz8",
+    "kid": "aa3wFU_s231ux69crmsIXztpHX7y7cW3VivqXp2tlv4"
+  }
+}
