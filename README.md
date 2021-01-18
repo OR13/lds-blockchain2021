@@ -1,7 +1,7 @@
 # Linked Data Signature for Blockchain 2021
 
 ```
-npm i lds-blockchain2021@latest --save
+npm i @or13/lds-blockchain2021@latest --save
 ```
 
 ## Use with verifiable credentials
@@ -12,7 +12,7 @@ import * as vcjs from '@trasnsmute/vc.js';
 import {
   BlockchainVerificationMethod2021,
   BlockchainSignature2021,
-} from 'lds-blockchain2021';
+} from '@or13/lds-blockchain2021';
 
 const options = {
   id: 'did:example:123#key',
