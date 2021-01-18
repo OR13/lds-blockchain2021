@@ -21,7 +21,8 @@
     "lint": "tsdx lint src --fix",
     "prepare": "tsdx build",
     "size": "size-limit",
-    "analyze": "size-limit --why"
+    "analyze": "size-limit --why",
+    "release": "npm publish"
   },
   "peerDependencies": {},
   "husky": {
