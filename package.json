@@ -2,7 +2,7 @@
   "name": "@or13/lds-blockchain2021",
   "author": "Orie Steele",
   "module": "dist/lds-blockchain2021.esm.js",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "license": "Apache-2.0",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -10,6 +10,7 @@
     "dist",
     "src"
   ],
+  "homepage": "https://github.com/or13/lds-blockchain2021",
   "publishConfig": {
     "access": "public"
   },
