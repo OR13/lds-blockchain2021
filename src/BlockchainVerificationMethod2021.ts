@@ -7,6 +7,7 @@ import {
 import publicKeyToAddress from 'ethereum-public-key-to-address';
 import { enc, SHA256, RIPEMD160 } from 'crypto-js';
 import { bech32 } from 'bech32';
+import base58 from 'bs58';
 
 export interface GenerateOptions {
   id: string;
@@ -34,6 +35,17 @@ const publicKeyToCosmosAddressWithoutPrefix = (
   return bech32.encode(prefix, words).replace(prefix, '');
 };
 
+const publicKeyToBip122Address = (publicKeyBuffer: Buffer) => {
+  const publicKeyHash = RIPEMD160(
+    SHA256(enc.Hex.parse(publicKeyBuffer.toString('hex')))
+  );
+  const step1 = Buffer.from('00' + publicKeyHash.toString(enc.Hex), 'hex');
+  const step2 = SHA256(SHA256(enc.Hex.parse(step1.toString('hex'))));
+  const checksum = step2.toString(enc.Hex).substring(0, 8);
+  const step3 = step1.toString('hex') + checksum;
+  return base58.encode(Buffer.from(step3, 'hex'));
+};
+
 const publicKeyBufferToBlockchainAccountId = (
   publicKeyBuffer: Buffer,
   chainId: string
@@ -48,6 +60,11 @@ const publicKeyBufferToBlockchainAccountId = (
       blockchainAccountId = `${publicKeyToCosmosAddressWithoutPrefix(
         publicKeyBuffer,
         chain[1]
+      )}@${chainId}`;
+      break;
+    case 'bip122':
+      blockchainAccountId = `${publicKeyToBip122Address(
+        publicKeyBuffer
       )}@${chainId}`;
       break;
     default:

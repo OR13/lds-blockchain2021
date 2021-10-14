@@ -29,6 +29,19 @@ it('generate-cosmos', async () => {
   expect(vm.blockchainAccountId).toBeDefined();
 });
 
+it('generate-bip122', async () => {
+  const options = {
+    id: 'did:example:123#key',
+    controller: 'did:example:123',
+    chainId: 'bip122:000000000019d6689c085ae165831e93',
+    secureRandom: () => {
+      return crypto.randomBytes(32);
+    },
+  };
+  const vm = await BlockchainVerificationMethod2021.generate(options);
+  expect(vm.blockchainAccountId).toBeDefined();
+});
+
 it('toKeyPair', async () => {
   const options = {
     id: 'did:example:123#key',
@@ -75,6 +88,25 @@ it('verifier-cosmos', async () => {
     id: 'did:example:123#key',
     controller: 'did:example:123',
     chainId: 'cosmos:dsrv',
+    secureRandom: () => {
+      return crypto.randomBytes(32);
+    },
+  };
+  const k = await BlockchainVerificationMethod2021.generate(options);
+  const signer = await k.signer();
+  const verifier = await k.verifier();
+  const message = Buffer.from('hello world');
+  const signature = await signer.sign({ data: message });
+  expect(signature).toBeDefined();
+  const verified = await verifier.verify({ data: message, signature });
+  expect(verified).toBe(true);
+});
+
+it('verifier-bip122', async () => {
+  const options = {
+    id: 'did:example:123#key',
+    controller: 'did:example:123',
+    chainId: 'bip122:000000000019d6689c085ae165831e93',
     secureRandom: () => {
       return crypto.randomBytes(32);
     },
