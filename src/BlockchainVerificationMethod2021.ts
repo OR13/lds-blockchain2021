@@ -5,6 +5,8 @@ import {
 } from '@transmute/did-key-secp256k1';
 
 import publicKeyToAddress from 'ethereum-public-key-to-address';
+import { enc, SHA256, RIPEMD160 } from 'crypto-js';
+import { bech32 } from 'bech32';
 
 export interface GenerateOptions {
   id: string;
@@ -21,12 +23,36 @@ export interface KeyPair {
   privateKeyJwk: any;
 }
 
+const publicKeyToCosmosAddressWithoutPrefix = (
+  publicKeyBuffer: Buffer,
+  prefix: string
+) => {
+  const hash = RIPEMD160(
+    SHA256(enc.Hex.parse(publicKeyBuffer.toString('hex')))
+  );
+  const words = bech32.toWords(Buffer.from(hash.toString(), 'hex'));
+  return bech32.encode(prefix, words).replace(prefix, '');
+};
+
 const publicKeyBufferToBlockchainAccountId = (
   publicKeyBuffer: Buffer,
   chainId: string
 ) => {
-  const address = publicKeyToAddress(publicKeyBuffer);
-  const blockchainAccountId = `${address}@${chainId}`;
+  const chain = chainId.split(':');
+  let blockchainAccountId = '';
+  switch (chain[0]) {
+    case 'eip155':
+      blockchainAccountId = `${publicKeyToAddress(publicKeyBuffer)}@${chainId}`;
+      break;
+    case 'cosmos':
+      blockchainAccountId = `${publicKeyToCosmosAddressWithoutPrefix(
+        publicKeyBuffer,
+        chain[1]
+      )}@${chainId}`;
+      break;
+    default:
+      break;
+  }
   return blockchainAccountId;
 };
 

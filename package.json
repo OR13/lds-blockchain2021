@@ -53,6 +53,7 @@
   "devDependencies": {
     "@size-limit/preset-small-lib": "^4.9.1",
     "@transmute/vc.js": "^0.2.1-unstable.1",
+    "@types/crypto-js": "^4.0.2",
     "husky": "^4.3.8",
     "size-limit": "^4.9.1",
     "ts-jest": "^26.4.4",
@@ -62,6 +63,8 @@
   },
   "dependencies": {
     "@transmute/did-key-secp256k1": "^0.2.1-unstable.30",
+    "bech32": "^2.0.0",
+    "crypto-js": "^4.1.1",
     "ethereum-public-key-to-address": "0.0.5",
     "jsonld": "^3.2.0",
     "security-context": "^4.0.0"
