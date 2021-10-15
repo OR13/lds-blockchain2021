@@ -55,6 +55,8 @@
     "@transmute/vc.js": "^0.2.1-unstable.1",
     "@types/bs58": "^4.0.1",
     "@types/crypto-js": "^4.0.2",
+    "@types/keccak": "^3.0.1",
+    "@types/secp256k1": "^4.0.3",
     "husky": "^4.3.8",
     "size-limit": "^4.9.1",
     "ts-jest": "^26.4.4",
@@ -67,8 +69,9 @@
     "bech32": "^2.0.0",
     "bs58": "^4.0.1",
     "crypto-js": "^4.1.1",
-    "ethereum-public-key-to-address": "0.0.5",
     "jsonld": "^3.2.0",
+    "keccak": "^3.0.2",
+    "secp256k1": "^4.0.2",
     "security-context": "^4.0.0"
   }
 }

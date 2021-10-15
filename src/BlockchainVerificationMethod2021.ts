@@ -3,12 +3,7 @@ import {
   ES256KR,
   keyUtils,
 } from '@transmute/did-key-secp256k1';
-
-import publicKeyToAddress from 'ethereum-public-key-to-address';
-import { enc, SHA256, RIPEMD160 } from 'crypto-js';
-import { bech32 } from 'bech32';
-import base58 from 'bs58';
-
+import { publicKeyBufferToBlockchainAccountId } from './blockchains';
 export interface GenerateOptions {
   id: string;
   controller: string;
@@ -23,55 +18,6 @@ export interface KeyPair {
   blockchainAccountId: string;
   privateKeyJwk: any;
 }
-
-const publicKeyToCosmosAddressWithoutPrefix = (
-  publicKeyBuffer: Buffer,
-  prefix: string
-) => {
-  const hash = RIPEMD160(
-    SHA256(enc.Hex.parse(publicKeyBuffer.toString('hex')))
-  );
-  const words = bech32.toWords(Buffer.from(hash.toString(), 'hex'));
-  return bech32.encode(prefix, words).replace(prefix, '');
-};
-
-const publicKeyToBip122Address = (publicKeyBuffer: Buffer) => {
-  const publicKeyHash = RIPEMD160(
-    SHA256(enc.Hex.parse(publicKeyBuffer.toString('hex')))
-  );
-  const step1 = Buffer.from('00' + publicKeyHash.toString(enc.Hex), 'hex');
-  const step2 = SHA256(SHA256(enc.Hex.parse(step1.toString('hex'))));
-  const checksum = step2.toString(enc.Hex).substring(0, 8);
-  const step3 = step1.toString('hex') + checksum;
-  return base58.encode(Buffer.from(step3, 'hex'));
-};
-
-const publicKeyBufferToBlockchainAccountId = (
-  publicKeyBuffer: Buffer,
-  chainId: string
-) => {
-  const chain = chainId.split(':');
-  let blockchainAccountId = '';
-  switch (chain[0]) {
-    case 'eip155':
-      blockchainAccountId = `${publicKeyToAddress(publicKeyBuffer)}@${chainId}`;
-      break;
-    case 'cosmos':
-      blockchainAccountId = `${publicKeyToCosmosAddressWithoutPrefix(
-        publicKeyBuffer,
-        chain[1]
-      )}@${chainId}`;
-      break;
-    case 'bip122':
-      blockchainAccountId = `${publicKeyToBip122Address(
-        publicKeyBuffer
-      )}@${chainId}`;
-      break;
-    default:
-      break;
-  }
-  return blockchainAccountId;
-};
 
 export class BlockchainVerificationMethod2021 {
   public id: string;

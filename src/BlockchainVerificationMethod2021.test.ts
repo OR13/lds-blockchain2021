@@ -3,11 +3,11 @@ import { BlockchainVerificationMethod2021 } from './BlockchainVerificationMethod
 
 import k0 from './__fixtures__/keypair.json';
 
-it('generate-eip155', async () => {
+it('generate-bip122', async () => {
   const options = {
     id: 'did:example:123#key',
     controller: 'did:example:123',
-    chainId: 'eip155:1',
+    chainId: 'bip122:000000000019d6689c085ae165831e93',
     secureRandom: () => {
       return crypto.randomBytes(32);
     },
@@ -29,11 +29,11 @@ it('generate-cosmos', async () => {
   expect(vm.blockchainAccountId).toBeDefined();
 });
 
-it('generate-bip122', async () => {
+it('generate-eip155', async () => {
   const options = {
     id: 'did:example:123#key',
     controller: 'did:example:123',
-    chainId: 'bip122:000000000019d6689c085ae165831e93',
+    chainId: 'eip155:1',
     secureRandom: () => {
       return crypto.randomBytes(32);
     },
@@ -72,8 +72,16 @@ it('signer', async () => {
   expect(signature).toBeDefined();
 });
 
-it('verifier-eip155', async () => {
-  const k = await BlockchainVerificationMethod2021.from(k0);
+it('verifier-bip122', async () => {
+  const options = {
+    id: 'did:example:123#key',
+    controller: 'did:example:123',
+    chainId: 'bip122:000000000019d6689c085ae165831e93',
+    secureRandom: () => {
+      return crypto.randomBytes(32);
+    },
+  };
+  const k = await BlockchainVerificationMethod2021.generate(options);
   const signer = await k.signer();
   const verifier = await k.verifier();
   const message = Buffer.from('hello world');
@@ -102,16 +110,8 @@ it('verifier-cosmos', async () => {
   expect(verified).toBe(true);
 });
 
-it('verifier-bip122', async () => {
-  const options = {
-    id: 'did:example:123#key',
-    controller: 'did:example:123',
-    chainId: 'bip122:000000000019d6689c085ae165831e93',
-    secureRandom: () => {
-      return crypto.randomBytes(32);
-    },
-  };
-  const k = await BlockchainVerificationMethod2021.generate(options);
+it('verifier-eip155', async () => {
+  const k = await BlockchainVerificationMethod2021.from(k0);
   const signer = await k.signer();
   const verifier = await k.verifier();
   const message = Buffer.from('hello world');
